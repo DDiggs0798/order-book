@@ -1,3 +1,5 @@
+New orderbook Start:
+
 function reconcileOrder(existingBook, incomingOrder) {
   let updatedBook = []
   
@@ -33,6 +35,62 @@ function reconcileOrder(existingBook, incomingOrder) {
      
 
      
+   
+
+
+  }
+
+
+  return updatedBook
+}
+
+
+
+
+module.exports = reconcileOrder
+
+
+
+
+Previous orderbook start: 
+
+
+function reconcileOrder(existingBook, incomingOrder) {
+  let updatedBook = []
+  
+  
+  if (!existingBook.length) {       // this if statement fixes problem 1
+    updatedBook = existingBook.concat(incomingOrder)
+    return updatedBook
+  }
+ //console.log(existingBook.length)
+ 
+ if (existingBook.length) {
+    let corrType = existingBook.filter((item) => {
+      return item.type !== incomingOrder.type
+    })
+    //console.log(corrType)
+    if (!corrType.length) {     // this if statement fixes problem 2
+      return existingBook.concat(incomingOrder)
+    } else (corrType.length);     // This if statement fixes problem 3
+    
+    let pullMatches = existingBook.filter((item) => {  // This statement fixes problem 4
+        return item.quantity !== incomingOrder.quantity
+    })
+    //console.log(pullMatches)
+    if (pullMatches.length) {
+      return existingBook.concat(incomingOrder)
+    }
+    
+    let largeOrder = existingBook.reduce((quantity, incomingOrder) => {  
+      return incomingOrder.quantity + quantity
+    },0)
+    console.log(largeOrder)
+    if (largeOrder ) {
+      let total = incomingOrder.quantity + existingBook.quantity
+      return total
+    }
+      
    
 
 

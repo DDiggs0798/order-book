@@ -104,3 +104,36 @@ function reconcileOrder(existingBook, incomingOrder) {
 
 
 module.exports = reconcileOrder
+
+
+
+
+terminal play:
+
+
+
+let example = [ { car: 'toyota',
+                  year: 2016,
+                 quantity: 4
+                },
+               { car: 'ford', 
+                year: 2015,
+                quantity: 6
+               }]
+undefined
+var exampleQuantity = example.map(function(item) {
+    return item.quantity;
+});
+undefined
+exampleQuantity
+(2) [4, 6]
+var total = exampleQuantity.reduce(function(prev, curr) {
+    return prev + curr;
+});
+undefined
+total
+10
+var total = exampleQuantity.reduce(function(prev, curr) {
+    return prev - curr;
+});
+undefined

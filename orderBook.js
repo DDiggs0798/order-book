@@ -1,46 +1,47 @@
 function reconcileOrder(existingBook, incomingOrder) {
   let updatedBook = []
+  let existingType = existingBook.map(function (item) {return item.type})
+  let existingQuantity = existingBook.map (function (item) {return item.quantity})
+  let existingPrice = existingBook.map (function (item) {return item.price})
   
-  
-  if (!existingBook.length) {       // this if statement fixes problem 1
-    updatedBook = existingBook.concat(incomingOrder)
-    return updatedBook
-  }
- //console.log(existingBook.length)
- 
- if (existingBook.length) {
-    let corrType = existingBook.filter((item) => {    //adds order when NO corresponding type #2
-      return item.type !== incomingOrder.type
-    })
-    let pullMatches = existingBook.filter((item) => {  
-      return item.quantity !== incomingOrder.quantity
-  })
-  let largeOrder = pullMatches.reduce((existingBook, incomingOrder) => {
-    return incomingOrder.quantity + existingBook.quantity
-  },0)
-    console.log(largeOrder)
-    //console.log(pullMatches)
+  if (existingBook.length == 0) {
+    updatedBook = existingBook.concat(incomingOrder) 
+   }
     
-    if (!corrType.length) {                         //adds order when NO corresponding type #2
-      return existingBook.concat(incomingOrder)
-    } else if (corrType.length) {                   // adds an order to the book when the books type does NOT match. #3
-      return existingBook.concat(incomingOrder)
-    } else if (pullMatches.length) {                // fulfills order and removes matching order of SAME quantity.
-      return existingBook.concat(incomingOrder)
-     }  else if (largeOrder.length) {               // fulfills an order and reduces matching order of Larger quantity.
-      return existingBook.concat(incomingOrder)
-     }
-     
 
-     
+   if (existingType == incomingOrder.type) {
+    updatedBook = existingBook.concat(incomingOrder)
+   } 
+
+
+   if ( (existingType != incomingOrder.type) && (existingPrice != incomingOrder.price) ) {
+      updatedBook = existingBook.concat(incomingOrder)
+   } 
+
+
+   if ( (existingType != incomingOrder.type) && (existingQuantity > incomingOrder.quantity) && (existingPrice == incomingOrder.price) ) {
+    incomingOrder.quantity = (existingQuantity - incomingOrder.quantity)
+    incomingOrder.type = ("buy")
+    updatedBook = updatedBook.concat(incomingOrder)
+   }
    
 
+   if ( ( existingType != incomingOrder.type) && (existingQuantity < incomingOrder.quantity) && (existingPrice == incomingOrder.price) ) {
+    incomingOrder.quantity = (incomingOrder.quantity - existingQuantity)
+    updatedBook = updatedBook.concat(incomingOrder)
+   } 
 
+   
+   if ((existingPrice != incomingOrder.price) && (existingBook.price > incomingOrder.price)) {
+      updatedBook = existingBook.concat(incomingOrder)
+   }
+
+
+
+
+   return updatedBook
   }
 
-
-  return updatedBook
-}
 
 
 
